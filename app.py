@@ -61,7 +61,7 @@ def post_temp(resource):
     if request.method == 'POST':
         data = json.loads(request.data.decode())
         if resource in data.keys():
-            redis.set(time.time(), data['temp'])
+            redis.set(time.time(), data[resource])
             return Response(status=200)
         return Response(status=400)
     if request.method == 'GET':
