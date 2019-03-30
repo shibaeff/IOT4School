@@ -49,7 +49,7 @@ def get_temp():
 # curl -H "Content-Type: application/json" -X POST -d '{"temp":72}' http://127.0.0.1:5000/api/v1/temp
 @app.route('/api/v1/temp', methods=['POST'])
 def post_temp():
-    data = json.loads(request.data.decode('utngrf-8'))
+    data = json.loads(request.data.decode())
     if 'temp' in data.keys():
         temps_redis_store.set(time.time(), data['temp'])
         return Response(status=200)
