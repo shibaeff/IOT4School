@@ -69,6 +69,7 @@ def post_temp(resource):
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
             temps.append(float(redis.get(k).decode('utf-8')))
+        return temp[-1]
 
 
 if __name__ == '__main__':
