@@ -69,7 +69,7 @@ def post_temp(resource):
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
             temps.append(redis.get(k).decode('utf-8'))
-        return str(temps[-1]), 0
+        return (str(temps[-1]), 200)
 		
 
 
