@@ -11,6 +11,7 @@ from flask import Flask, request
 app = Flask(__name__)
 app.config['DEBUG'] = True
 temps_redis_store = fakeredis.FakeStrictRedis(0)
+nfc_redis_store = fakeredis.FakeStrictRedis(0)
 
 
 
@@ -46,14 +47,28 @@ def get_temp():
     return "Current temperature is %d" % (temps[-1]), 200
 
 
+def define_redis(resource):
+    if resource == 'temp':
+        return temps_redis_store
+    if resource == 'nfc':
+        return nfc_redis_store
+
+
 # curl -H "Content-Type: application/json" -X POST -d '{"temp":72}' http://127.0.0.1:5000/api/v1/temp
-@app.route('/api/v1/temp', methods=['POST'])
-def post_temp():
-    data = json.loads(request.data.decode())
-    if 'temp' in data.keys():
-        temps_redis_store.set(time.time(), data['temp'])
-        return Response(status=200)
-    return Response(status=400)
+@app.route('/api/v1/<resource>', methods=['POST', 'GET'])
+def post_temp(resource):
+    redis = define_redis(resource)
+    if request.method == 'POST':
+        data = json.loads(request.data.decode())
+        if resource in data.keys():
+            redis.set(time.time(), data['temp'])
+            return Response(status=200)
+        return Response(status=400)
+    if request.method == 'GET':
+        temps = [0]
+        times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
+        for k in times:
+            temps.append(float(redis.get(k).decode('utf-8')))
 
 
 if __name__ == '__main__':
