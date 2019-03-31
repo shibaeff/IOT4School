@@ -90,7 +90,7 @@ def post_temp(resource):
         if resource in data.keys():
             value = int(data[resource])
             if resource in scorers:
-                scores[resource] += scores[resource].score(value)
+                scores[resource] += scorers[resource].score(value)
                 scores[resource] /= 2
         
             redis.set(time.time(), value)
