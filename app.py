@@ -82,7 +82,7 @@ def generate():
         return "ok"
 
 @app.route('/api/dev')
-def dev(device):
+def dev():
     app.logger.warn("Got request from the client")
     return generate(), 200
 
