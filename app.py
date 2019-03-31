@@ -95,7 +95,7 @@ def manager():
 @app.route('/api/score', methods=['GET'])
 def get_score():
     global red_quants
-    score = (max(int(sum([s ** 2 for s in scores.values()]) ** 0.5), 10))
+    score = (min(int(sum([s ** 2 for s in scores.values()]) ** 0.5), 10))
     if score <= 6:
         red_quants += 1
     manager()
