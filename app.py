@@ -78,9 +78,11 @@ def get_temp():
 def generate():
         return "ok"
 
+temp_const = None
 @app.route('/api/dev')
 def dev():
     app.logger.warn("Got request from the client")
+    global temp_const = 22
     return generate(), 200
 
 red_quants = 0
@@ -147,7 +149,6 @@ def post_temp(resource):
                 value = rng[np.random.randint(0, len(rng))]
             else:
                 value = float(data[resource])
-            print(scores["co2"])
             if resource in {"co2", "temp", "light", "humidity"}:
                 scores[resource] = scorers[resource].score(value)
         
@@ -161,6 +162,8 @@ def post_temp(resource):
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
             temps.append(redis.get(k).decode('utf-8'))
+        if temp_const is not None:
+            return ("%.1f" % (float(temp_const)), 200)
         if resource == 'temp' and float(temps[-1]) > 100.0:
             return (str(temp_conv(temps[-1])), 200)
         return ("%.1f" % (float(temps[-1])), 200)
