@@ -75,6 +75,12 @@ def get_temp():
         temps.append(float(temps_redis_store.get(k).decode('utf-8')))
     return "Current temperature is %d" % (temps[-1]), 200
 
+@app.route('/api/dev/<device>', methods=['POST']):
+def dev(device):
+    def generate():
+        return "Принято"
+    return Response(generate, mimetype='text/html')
+
 
 @app.route('/api/score', methods=['GET'])
 def get_score():
