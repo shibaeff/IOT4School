@@ -96,7 +96,7 @@ def post_temp(resource):
         data = json.loads(request.data.decode())
        
         if resource in data.keys():
-
+            value = 0
             if resource == 'temp':
                 value = temp_conv(data[resource])
             else:
