@@ -19,10 +19,10 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 redises = {
     "nfc": fakeredis.FakeStrictRedis(0),
-    "temp": fakeredis.FakeStrictRedis(0),
-    "light": fakeredis.FakeStrictRedis(0),
-    "humidity": fakeredis.FakeStrictRedis(0),
-    "co2": fakeredis.FakeStrictRedis(0)
+    "temp": fakeredis.FakeStrictRedis(1),
+    "light": fakeredis.FakeStrictRedis(3),
+    "humidity": fakeredis.FakeStrictRedis(4),
+    "co2": fakeredis.FakeStrictRedis(5)
 }
 
 scorers = {
