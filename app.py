@@ -95,10 +95,21 @@ def manager():
         app.logger.error("Please, consider manual toggling")
         red_quants = 0
 
+masses = {
+    "temp": 1,
+    "humidity": 0.5,
+    "light":  0.7,
+    "co2": 0.2
+}
 @app.route('/api/score', methods=['GET'])
 def get_score():
     global red_quants
-    score = (min(int(sum([s ** 2 for s in scores.values()]) ** 0.5), 10))
+
+    score = 0
+    for item in scores.items():
+        score += masses[item.key] * item.value
+    score /= sum(list(masses.values()))
+    score = int(score)
     if score <= 6:
         red_quants += 1
     manager()
