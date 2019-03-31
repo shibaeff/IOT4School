@@ -75,7 +75,7 @@ def get_temp():
     return "Current temperature is %d" % (temps[-1]), 200
 
 
-@app.route('/api/v1/score', methods=['GET'])
+@app.route('/api/score', methods=['GET'])
 def get_score():
     return sum([s ** 2 for s in scores.values()]) ** 0.5
 
@@ -85,19 +85,16 @@ def get_score():
 def post_temp(resource):
     redis = redises[resource]
     if request.method == 'POST':
-        try:
-            data = json.loads(request.data.decode())
-            value = int(data)
+        data = json.loads(request.data.decode())
+        value = int(data)
 
-            if resource in scorers:
-                scores[resource] += scores[resource].score(value)
-                scores[resource] /= 2
-            if resource in data.keys():
-                redis.set(time.time(), data[resource])
-                return Response(status=200)
-            return Response(status=400)
-        except Exception:
-            pass
+        if resource in scorers:
+            scores[resource] += scores[resource].score(value)
+            scores[resource] /= 2
+        if resource in data.keys():
+            redis.set(time.time(), data[resource])
+            return Response(status=200)
+        return Response(status=400)
     if request.method == 'GET':
         temps = [0]
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
