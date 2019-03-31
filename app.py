@@ -89,8 +89,10 @@ def manager():
     if red_quants == 20:
         app.logger.warning("Encountered bad score. Toggling the parameters!")
         app.logger.warning("Parameters toggled!")
+        red_quants = 0
     elif red_quants > 20:
         app.logger.error("Please, consider manual toggling")
+        red_quants = 0
 
 @app.route('/api/score', methods=['GET'])
 def get_score():
@@ -130,8 +132,7 @@ def post_temp(resource):
                 value = float(data[resource])
             print(scores["co2"])
             if resource in {"co2", "temp", "light", "humidity"}:
-                scores[resource] += scorers[resource].score(value)
-                scores[resource] /= 2
+                scores[resource] = scorers[resource].score(value)
         
             redis.set(time.time(), value)
             return Response(status=200)

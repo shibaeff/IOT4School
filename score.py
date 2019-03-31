@@ -40,3 +40,4 @@ class Co2Scorer(Scorer):
         super().__init__()
         self._rng = np.linspace(300, 750, 50)
 
+
