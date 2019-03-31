@@ -125,7 +125,7 @@ def post_temp(resource):
             temps.append(redis.get(k).decode('utf-8'))
         if resource == 'temp' and float(temps[-1]) > 100.0:
             return (str(temp_conv(temps[-1])), 200)
-        return (str(temps[-1]), 200)
+        return ("%.1f" % (temps[-1]), 200)
         
 
 
