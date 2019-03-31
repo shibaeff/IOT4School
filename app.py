@@ -82,7 +82,8 @@ temp_const = None
 @app.route('/api/dev')
 def dev():
     app.logger.warn("Got request from the client")
-    global temp_const = 22
+    global temp_const
+    temp_const = 22
     return generate(), 200
 
 red_quants = 0
