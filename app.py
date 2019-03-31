@@ -86,11 +86,11 @@ def dev():
 red_quants = 0
 def manager():
     global red_quants
-    if red_quants == 20:
+    if red_quants == 5:
         app.logger.warning("Encountered bad score. Toggling the parameters!")
         app.logger.warning("Parameters toggled!")
         red_quants = 0
-    elif red_quants > 20:
+    elif red_quants > 8:
         app.logger.error("Please, consider manual toggling")
         red_quants = 0
 
