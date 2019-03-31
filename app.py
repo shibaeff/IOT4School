@@ -44,6 +44,7 @@ nfc_redis_store = fakeredis.FakeStrictRedis(0)
 
 
 # def get_temp():
+#lala
 #     temps = []
 #     times = sorted([float(g.decode('utf-8')) for g in temps_redis_store.keys()])
 #     for k in times:
