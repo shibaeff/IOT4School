@@ -89,7 +89,7 @@ def dev(device):
 
 @app.route('/api/score', methods=['GET'])
 def get_score():
-    return str(int(sum([s for s in scores.values()]) / 4 % 10)), 200
+    return str(int(sum([s for s in scores.values()]) / 4 + 3  % 10)), 200
 
 from math import log 
 
