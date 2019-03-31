@@ -4,6 +4,9 @@ import json
 import pygal
 import datetime
 from score import *
+import logging
+from logging.handlers import RotatingFileHandler
+import np
 
 temp_scorer = TempScorer()
 co2_scorer = Co2Scorer()
@@ -66,6 +69,7 @@ nfc_redis_store = fakeredis.FakeStrictRedis(0)
 #         </html>
 #         """ % (title, bar_chart.render())
 #     return html
+@
 
 @app.route('/', methods=['GET'])
 def get_temp():
@@ -119,6 +123,12 @@ def post_temp(resource):
             return Response(status=200)
         return Response(status=400)
     if request.method == 'GET':
+        if resource == 'light':
+            # kostil
+            rng = np.linsapace(200, 800, 50)
+            value np.random.sample(rng)
+            return ("%.1f" % (float(value)), 200)
+
         temps = [0]
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
