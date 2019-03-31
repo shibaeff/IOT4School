@@ -162,6 +162,7 @@ def post_temp(resource):
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
             temps.append(redis.get(k).decode('utf-8'))
+        global temp_const
         if temp_const is not None:
             return ("%.1f" % (float(temp_const)), 200)
         if resource == 'temp' and float(temps[-1]) > 100.0:
