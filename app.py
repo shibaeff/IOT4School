@@ -42,8 +42,6 @@ scores = {
     "humidity": 0,
     "co2": 0
 }
-temps_redis_store = fakeredis.FakeStrictRedis(0)
-nfc_redis_store = fakeredis.FakeStrictRedis(0)
 
 
 # def get_temp():
@@ -126,7 +124,7 @@ def post_temp(resource):
                 value = temp_conv(data[resource])
             elif resource == 'light':
                 # kostil
-                rng = np.linspace(200, 800, 30)
+                rng = np.linspace(500, 600)
                 value = rng[np.random.randint(0, len(rng))]
             else:
                 value = float(data[resource])
