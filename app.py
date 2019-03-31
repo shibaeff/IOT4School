@@ -79,6 +79,14 @@ def get_temp():
 def get_score():
     return sum([s ** 2 for s in scores.values()]) ** 0.5
 
+from math import log 
+
+def temp_conv(thermoPin):
+    voltage = float(thermoPin) * 5.0 / 1023.0
+    r1 = voltage / (5.0 - voltage)
+    return  1.0 / ( 1.0 / (4300.0) * log(r1) + 1.0 / (25.0 + 273.0) ) - 273.0
+
+
 
 # curl -H "Content-Type: application/json" -X POST -d '{"temp":72}' http://127.0.0.1:5000/api/v1/temp
 @app.route('/api/v1/<resource>', methods=['POST', 'GET'])
@@ -88,7 +96,10 @@ def post_temp(resource):
         data = json.loads(request.data.decode())
        
         if resource in data.keys():
-            value = int(data[resource])
+
+            if resource == 'temp':
+                value = float(data[resource])
+            value = float(data[resource])
             if resource in scorers:
                 scores[resource] += scorers[resource].score(value)
                 scores[resource] /= 2
