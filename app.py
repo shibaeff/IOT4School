@@ -164,7 +164,7 @@ def post_temp(resource):
         for k in times:
             temps.append(redis.get(k).decode('utf-8'))
         global temp_const
-        if temp_const is not None:
+        if temp_const is not None and resource == 'temp':
             return ("%.1f" % (float(temp_const)), 200)
         if resource == 'temp' and float(temps[-1]) > 100.0:
             return (str(temp_conv(temps[-1])), 200)
