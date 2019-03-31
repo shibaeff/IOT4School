@@ -81,10 +81,10 @@ def get_temp():
 def generate():
         return "ok"
 
-@app.route('/api/dev', methods=['POST'])
+@app.route('/api/dev')
 def dev(device):
     app.logger.warn("Got request from the client")
-    return Response(generate(), mimetype='text/html')
+    return generate(), 200
 
 red_quants = 0
 def manager():
