@@ -59,21 +59,21 @@ def define_redis(resource):
 def post_temp(resource):
     redis = define_redis(resource)
     if request.method == 'POST':
-		try:
-			data = json.loads(request.data.decode())
-			if resource in data.keys():
-				redis.set(time.time(), data[resource])
-				return Response(status=200)
-			return Response(status=400)
-		except Exception:
-			pass
+        try:
+            data = json.loads(request.data.decode())
+            if resource in data.keys():
+                redis.set(time.time(), data[resource])
+                return Response(status=200)
+            return Response(status=400)
+        except Exception:
+            pass
     if request.method == 'GET':
         temps = [0]
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
             temps.append(redis.get(k).decode('utf-8'))
         return (str(temps[-1]), 200)
-		
+        
 
 
 if __name__ == '__main__':
