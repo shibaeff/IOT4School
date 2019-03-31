@@ -36,7 +36,6 @@ scorers = {
 }
 
 scores = {
-    "nfc": 0,
     "temp": 0,
     "light": 0,
     "humidity": 0,
