@@ -109,6 +109,9 @@ def check_score():
         score += masses[item[0]] * item[1]
     score /= sum(list(masses.values()))
     score = int(score)
+
+    if score <= 6:
+        red_quants += 1
     manager()
     return score
 
