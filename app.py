@@ -3,6 +3,13 @@ import time
 import json
 import pygal
 import datetime
+from score import *
+
+temp_scorer = TempScorer()
+co2_scorer = Co2Scorer()
+light_scorer = LightScorer()
+humidity_scorer = HumidityScorer()
+
 
 from werkzeug.wrappers import Response
 from flask import Flask, request
@@ -10,9 +17,30 @@ from flask import Flask, request
 # initialize app and our cache (it'll go away after the app stops running)
 app = Flask(__name__)
 app.config['DEBUG'] = True
+redises = {
+    "nfc": fakeredis.FakeStrictRedis(0),
+    "temp": fakeredis.FakeStrictRedis(0),
+    "light": fakeredis.FakeStrictRedis(0),
+    "humidity": fakeredis.FakeStrictRedis(0),
+    "co2": fakeredis.FakeStrictRedis(0)
+}
+
+scorers = {
+    "temp": temp_scorer,
+    "light": light_scorer,
+    "humidity": humidity_scorer,
+    "co2": co2_scorer
+}
+
+scores = {
+    "nfc": 0,
+    "temp": 0,
+    "light": 0,
+    "humidity": 0,
+    "co2": 0
+}
 temps_redis_store = fakeredis.FakeStrictRedis(0)
 nfc_redis_store = fakeredis.FakeStrictRedis(0)
-
 
 
 # def get_temp():
@@ -47,20 +75,23 @@ def get_temp():
     return "Current temperature is %d" % (temps[-1]), 200
 
 
-def define_redis(resource):
-    if resource == 'temp':
-        return temps_redis_store
-    if resource == 'nfc':
-        return nfc_redis_store
+@app.route('/api/v1/score', methods=['GET'])
+def get_score():
+    return sum([s ** 2 for s in scores.values()]) ** 0.5
 
 
 # curl -H "Content-Type: application/json" -X POST -d '{"temp":72}' http://127.0.0.1:5000/api/v1/temp
 @app.route('/api/v1/<resource>', methods=['POST', 'GET'])
 def post_temp(resource):
-    redis = define_redis(resource)
+    redis = redises[resource]
     if request.method == 'POST':
         try:
             data = json.loads(request.data.decode())
+            value = int(data)
+
+            if resource in scorers:
+                scorers[resource] += scores[resource].score(value)
+                scorers[resource] /= 2
             if resource in data.keys():
                 redis.set(time.time(), data[resource])
                 return Response(status=200)
