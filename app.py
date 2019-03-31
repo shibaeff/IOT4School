@@ -86,13 +86,14 @@ def post_temp(resource):
     redis = redises[resource]
     if request.method == 'POST':
         data = json.loads(request.data.decode())
-        value = int(data)
-
-        if resource in scorers:
-            scores[resource] += scores[resource].score(value)
-            scores[resource] /= 2
+       
         if resource in data.keys():
-            redis.set(time.time(), data[resource])
+            value = int(data[resource])
+            if resource in scorers:
+                scores[resource] += scores[resource].score(value)
+                scores[resource] /= 2
+        
+            redis.set(time.time(), value)
             return Response(status=200)
         return Response(status=400)
     if request.method == 'GET':
