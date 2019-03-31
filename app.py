@@ -114,7 +114,7 @@ def post_temp(resource):
             elif resource == 'light':
                 # kostil
                 rng = np.linspace(200, 800, 30)
-                value = np.random.sample(rng)
+                value = rng[np.random.randint(0, len(rng))]
             else:
                 value = float(data[resource])
             print(scores["co2"])
