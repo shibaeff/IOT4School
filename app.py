@@ -100,8 +100,8 @@ masses = {
     "light":  0.7,
     "co2": 0.2
 }
-@app.route('/api/score', methods=['GET'])
-def get_score():
+
+def check_score():
     global red_quants
 
     score = 0
@@ -109,9 +109,12 @@ def get_score():
         score += masses[item[0]] * item[1]
     score /= sum(list(masses.values()))
     score = int(score)
-    if score <= 6:
-        red_quants += 1
     manager()
+    return score
+
+@app.route('/api/score', methods=['GET'])
+def get_score():
+    score = check_score()
     return str(score), 200
 
 from math import log 
@@ -146,10 +149,11 @@ def post_temp(resource):
                 scores[resource] = scorers[resource].score(value)
         
             redis.set(time.time(), value)
+            score = check_score()
             return Response(status=200)
         return Response(status=400)
     if request.method == 'GET':
-        
+        score = check_score()
         temps = [0]
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
