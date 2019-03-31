@@ -79,7 +79,7 @@ def get_temp():
 def dev(device):
     def generate():
         return "Принято"
-    return Response(generate, mimetype='text/html')
+    return Response(generate(), mimetype='text/html')
 
 
 @app.route('/api/score', methods=['GET'])
