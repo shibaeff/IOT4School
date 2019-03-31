@@ -79,11 +79,11 @@ def get_temp():
     return "Current temperature is %d" % (temps[-1]), 200
 
 def generate():
-        return "Принято"
+        return "ok"
 
-@app.route('/api/dev/<device>', methods=['POST'])
+@app.route('/api/dev', methods=['POST'])
 def dev(device):
-    
+    app.logger.warn("Got request from the client")
     return Response(generate(), mimetype='text/html')
 
 red_quants = 0
