@@ -107,7 +107,7 @@ def get_score():
 
     score = 0
     for item in scores.items():
-        score += masses[item.key] * item.value
+        score += masses[item[0]] * item[1]
     score /= sum(list(masses.values()))
     score = int(score)
     if score <= 6:
