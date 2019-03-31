@@ -86,10 +86,22 @@ def dev(device):
     
     return Response(generate(), mimetype='text/html')
 
+red_quants = 0
+def manager():
+    if red_quants == 20:
+        app.logger.warning("Encountered bad score. Toggling the parameters!")
+        app.logger.warning("Parameters toggled!")
+    elif red_quants > 20:
+        app.logger.error("Please, consider manual toggling")
 
 @app.route('/api/score', methods=['GET'])
 def get_score():
-    return str(int(sum([s ** 2 for s in scores.values()]) ** 0.5) % 10), 200
+    global red_quants
+    score = str(int(sum([s ** 2 for s in scores.values()]) ** 0.5) % 10), 200
+    if score <= 6:
+        red_quants += 1
+    manager()
+    return score
 
 from math import log 
 
@@ -99,13 +111,7 @@ def temp_conv(thermoPin):
     return  1.0 / ( 1.0 / (4300.0) * log(r1) + 1.0 / (25.0 + 273.0) ) - 273.0
 
 
-red_quants = 0
-def model():
-    if red_quants == 20:
-        app.logger.warning("Encountered bad score. Toggling the parameters!")
-        app.logger.warning("Parameters toggled!")
-    elif red_quants > 20:
-        app.logger.error("")
+
 
 # curl -H "Content-Type: application/json" -X POST -d '{"temp":72}' http://127.0.0.1:5000/api/v1/temp
 @app.route('/api/v1/<resource>', methods=['POST', 'GET'])
