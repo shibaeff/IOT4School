@@ -6,7 +6,7 @@ import datetime
 from score import *
 import logging
 from logging.handlers import RotatingFileHandler
-import np
+import numpy as np
 
 temp_scorer = TempScorer()
 co2_scorer = Co2Scorer()
@@ -69,7 +69,6 @@ nfc_redis_store = fakeredis.FakeStrictRedis(0)
 #         </html>
 #         """ % (title, bar_chart.render())
 #     return html
-@
 
 @app.route('/', methods=['GET'])
 def get_temp():
