@@ -98,7 +98,7 @@ def post_temp(resource):
         if resource in data.keys():
 
             if resource == 'temp':
-                value = float(data[resource])
+                value = temp_conv(data[resource])
             value = float(data[resource])
             if resource in scorers:
                 scores[resource] += scorers[resource].score(value)
