@@ -114,6 +114,8 @@ def post_temp(resource):
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
             temps.append(redis.get(k).decode('utf-8'))
+        if resource == 'temp' and temps[-1] > 100:
+            return (str(temp_conv(temps[-1])), 200)
         return (str(temps[-1]), 200)
         
 
