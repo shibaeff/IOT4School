@@ -99,6 +99,7 @@ def post_temp(resource):
             value = 0
             if resource == 'temp':
                 value = temp_conv(data[resource])
+                assert (value < 100)
             else:
                 value = float(data[resource])
             if resource in scorers:
