@@ -86,7 +86,7 @@ def dev(device):
 
 @app.route('/api/score', methods=['GET'])
 def get_score():
-    return sum([s ** 2 for s in scores.values()]) ** 0.5
+    return str(sum([s ** 2 for s in scores.values()]) ** 0.5), 200
 
 from math import log 
 
@@ -108,10 +108,10 @@ def post_temp(resource):
             value = 0
             if resource == 'temp':
                 value = temp_conv(data[resource])
-                assert (value < 100)
             else:
                 value = float(data[resource])
-            if resource in scorers:
+            print(scores["co2"])
+            if resource in {"co2", "temp", "light", "humidity"}:
                 scores[resource] += scorers[resource].score(value)
                 scores[resource] /= 2
         
