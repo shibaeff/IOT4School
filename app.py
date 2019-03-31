@@ -112,6 +112,10 @@ def post_temp(resource):
             value = 0
             if resource == 'temp':
                 value = temp_conv(data[resource])
+            elif resource == 'light':
+                # kostil
+                rng = np.linsapace(200, 800, 50)
+                value = np.random.sample(rng)
             else:
                 value = float(data[resource])
             print(scores["co2"])
@@ -123,12 +127,7 @@ def post_temp(resource):
             return Response(status=200)
         return Response(status=400)
     if request.method == 'GET':
-        if resource == 'light':
-            # kostil
-            rng = np.linsapace(200, 800, 50)
-            value np.random.sample(rng)
-            return ("%.1f" % (float(value)), 200)
-
+        
         temps = [0]
         times = sorted([float(g.decode('utf-8')) for g in redis.keys()])
         for k in times:
