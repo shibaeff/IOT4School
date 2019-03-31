@@ -113,7 +113,7 @@ def post_temp(resource):
                 value = temp_conv(data[resource])
             elif resource == 'light':
                 # kostil
-                rng = np.linspace(200, 800, 50)
+                rng = np.linspace(200, 800, 30)
                 value = np.random.sample(rng)
             else:
                 value = float(data[resource])
